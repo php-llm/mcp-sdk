@@ -96,3 +96,23 @@ final readonly class McpController
     }
 }
 ```
+
+### Exposing Tools
+
+Under the hood the SDK uses [LLM Chain](https://github.com/php-llm/llm-chain)'s `ToolBox` to register, analyze and
+execute tools. In combination with its [Symfony Bundle](https://github.com/php-llm/llm-chain-bundle) you can expose
+tools with `#[AsTool]` attribute.
+
+```php
+use PhpLlm\LlmChain\ToolBox\Attribute\AsTool;
+
+#[AsTool('company_name', 'Provides the name of your company')]
+final class CompanyName
+{
+    public function __invoke(): string
+    {
+        return 'ACME Corp.'
+    }
+}
+```
+See [LLM Chain Documentation](https://github.com/php-llm/llm-chain?tab=readme-ov-file#tools) for more information.
