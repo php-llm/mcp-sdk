@@ -47,7 +47,9 @@ final readonly class StreamTransport implements Transport
         echo sprintf('event: %s', $event).PHP_EOL;
         echo sprintf('data: %s', $data).PHP_EOL;
         echo PHP_EOL;
-        ob_flush();
+        if (ob_get_length() !== false) {
+            ob_flush();
+        }
         flush();
     }
 }
