@@ -13,7 +13,7 @@
         "php": "^8.2",
         "psr/log": "^3.0",
         "symfony/uid": "^7.2",
-        "php-llm/llm-chain": "^0.17.0"
+        "php-llm/llm-chain": "^0.19.0"
     },
     "require-dev": {
         "php-cs-fixer/shim": "^3.70",
