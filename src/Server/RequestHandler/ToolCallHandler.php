@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpLlm\McpSdk\Server\RequestHandler;
 
-use PhpLlm\LlmChain\Chain\ToolBox\ToolBoxInterface;
+use PhpLlm\LlmChain\Chain\Toolbox\ToolboxInterface;
 use PhpLlm\LlmChain\Exception\ExceptionInterface;
 use PhpLlm\LlmChain\Model\Response\ToolCall;
 use PhpLlm\McpSdk\Message\Error;
@@ -15,7 +15,7 @@ use PhpLlm\McpSdk\Message\Response;
 final class ToolCallHandler extends BaseRequestHandler
 {
     public function __construct(
-        private readonly ToolBoxInterface $toolBox,
+        private readonly ToolboxInterface $toolbox,
     ) {
     }
 
@@ -25,7 +25,7 @@ final class ToolCallHandler extends BaseRequestHandler
         $arguments = $message->params['arguments'] ?? [];
 
         try {
-            $result = $this->toolBox->execute(new ToolCall(uniqid(), $name, $arguments));
+            $result = $this->toolbox->execute(new ToolCall(uniqid(), $name, $arguments));
         } catch (ExceptionInterface) {
             return Error::internalError($message->id, 'Error while executing tool');
         }
