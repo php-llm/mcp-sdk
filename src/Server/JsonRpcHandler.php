@@ -43,14 +43,14 @@ final readonly class JsonRpcHandler
 
         try {
             $message = $this->messageFactory->create($message);
-        } catch (\JsonException $exception) {
-            $this->logger->warning('Failed to decode json message', ['exception' => $exception]);
+        } catch (\JsonException $e) {
+            $this->logger->warning('Failed to decode json message', ['exception' => $e]);
 
-            return $this->encodeResponse(Error::parseError($exception->getMessage()));
-        } catch (\InvalidArgumentException $exception) {
-            $this->logger->warning('Failed to create message', ['exception' => $exception]);
+            return $this->encodeResponse(Error::parseError($e->getMessage()));
+        } catch (\InvalidArgumentException $e) {
+            $this->logger->warning('Failed to create message', ['exception' => $e]);
 
-            return $this->encodeResponse(Error::invalidRequest(0, $exception->getMessage()));
+            return $this->encodeResponse(Error::invalidRequest(0, $e->getMessage()));
         }
 
         $this->logger->info('Decoded incoming message', ['message' => $message]);
@@ -60,10 +60,10 @@ final readonly class JsonRpcHandler
                 ? $this->handleNotification($message) : $this->encodeResponse($this->handleRequest($message));
         } catch (\DomainException) {
             return null;
-        } catch (\InvalidArgumentException $exception) {
-            $this->logger->warning('Failed to create response', ['exception' => $exception]);
+        } catch (\InvalidArgumentException $e) {
+            $this->logger->warning(sprintf('Failed to create response: %s', $e->getMessage()), ['exception' => $e]);
 
-            return $this->encodeResponse(Error::methodNotFound($message->id ?? 0, $exception->getMessage()));
+            return $this->encodeResponse(Error::methodNotFound($message->id ?? 0, $e->getMessage()));
         }
     }
 
