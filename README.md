@@ -1,8 +1,9 @@
 # Model Context Protocol PHP SDK [WIP]
 
 Model Context Protocol SDK for Client and Server applications in PHP.
+**Currently only support Tool Calls as Server via Server-Sent Events (SSE) and STDIO.**
 
-See [Demo App](https://github.com/php-llm/mcp-demo) for a working example.
+See [Demo App](https://github.com/php-llm/mcp-demo) for a working example and [MCP Bundle](https://github.com/php-llm/mcp-bundle) for Symfony integration.
 
 ## Installation
 
