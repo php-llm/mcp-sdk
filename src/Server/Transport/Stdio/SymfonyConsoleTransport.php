@@ -33,14 +33,12 @@ final class SymfonyConsoleTransport implements Transport
 
     public function receive(): \Generator
     {
-        $stream = $this->input instanceof StreamableInputInterface ? $this->input->getStream() : STDIN;
-        $line = fgets($stream ?? STDIN);
-
+        $stream = $this->input instanceof StreamableInputInterface ? $this->input->getStream() ?? STDIN : STDIN;
+        $line = fgets($stream);
         if (false === $line) {
             return;
         }
-
-        $this->buffer .= $line;
+        $this->buffer .= STDIN === $stream ? rtrim($line).PHP_EOL : $line;
         if (str_contains($this->buffer, PHP_EOL)) {
             $lines = explode(PHP_EOL, $this->buffer);
             $this->buffer = array_pop($lines);
