@@ -12,7 +12,7 @@ use PhpLlm\McpSdk\Message\Response;
 final class ToolListHandler extends BaseRequestHandler
 {
     public function __construct(
-        private readonly ToolCollectionInterface $toolbox,
+        private readonly ToolCollectionInterface $toolCollection,
     ) {
     }
 
@@ -30,7 +30,7 @@ final class ToolListHandler extends BaseRequestHandler
                         '$schema' => 'http://json-schema.org/draft-07/schema#',
                     ] : $inputSchema,
                 ];
-            }, $this->toolbox->getMetadata()),
+            }, $this->toolCollection->getMetadata()),
         ]);
     }
 

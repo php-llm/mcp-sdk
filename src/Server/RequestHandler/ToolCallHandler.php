@@ -14,7 +14,7 @@ use PhpLlm\McpSdk\Message\Response;
 final class ToolCallHandler extends BaseRequestHandler
 {
     public function __construct(
-        private readonly ToolExecutorInterface $toolbox,
+        private readonly ToolExecutorInterface $toolExecutor,
     ) {
     }
 
@@ -24,7 +24,7 @@ final class ToolCallHandler extends BaseRequestHandler
         $arguments = $message->params['arguments'] ?? [];
 
         try {
-            $result = $this->toolbox->execute(new ToolCall(uniqid('', true), $name, $arguments));
+            $result = $this->toolExecutor->execute(new ToolCall(uniqid('', true), $name, $arguments));
         } catch (ExceptionInterface) {
             return Error::internalError($message->id, 'Error while executing tool');
         }
