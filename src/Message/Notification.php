@@ -37,4 +37,9 @@ final readonly class Notification implements \JsonSerializable
             'params' => $this->params,
         ];
     }
+
+    public function __toString(): string
+    {
+        return sprintf('%s', $this->method);
+    }
 }

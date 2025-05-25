@@ -40,4 +40,9 @@ final class Request implements \JsonSerializable
             'params' => $this->params,
         ];
     }
+
+    public function __toString(): string
+    {
+        return sprintf('%s: %s', $this->id, $this->method);
+    }
 }
