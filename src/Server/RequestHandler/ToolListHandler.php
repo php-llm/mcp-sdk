@@ -6,7 +6,6 @@ namespace PhpLlm\McpSdk\Server\RequestHandler;
 
 use PhpLlm\LlmChain\Chain\Toolbox\Metadata;
 use PhpLlm\LlmChain\Chain\Toolbox\ToolboxInterface;
-use PhpLlm\McpSdk\Message\Notification;
 use PhpLlm\McpSdk\Message\Request;
 use PhpLlm\McpSdk\Message\Response;
 
@@ -17,7 +16,7 @@ final class ToolListHandler extends BaseRequestHandler
     ) {
     }
 
-    public function createResponse(Request|Notification $message): Response
+    public function createResponse(Request $message): Response
     {
         return new Response($message->id, [
             'tools' => array_map(function (Metadata $tool) {

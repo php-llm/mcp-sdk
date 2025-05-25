@@ -8,7 +8,6 @@ use PhpLlm\LlmChain\Chain\Toolbox\ToolboxInterface;
 use PhpLlm\LlmChain\Exception\ExceptionInterface;
 use PhpLlm\LlmChain\Model\Response\ToolCall;
 use PhpLlm\McpSdk\Message\Error;
-use PhpLlm\McpSdk\Message\Notification;
 use PhpLlm\McpSdk\Message\Request;
 use PhpLlm\McpSdk\Message\Response;
 
@@ -19,7 +18,7 @@ final class ToolCallHandler extends BaseRequestHandler
     ) {
     }
 
-    public function createResponse(Request|Notification $message): Response|Error
+    public function createResponse(Request $message): Response|Error
     {
         $name = $message->params['name'];
         $arguments = $message->params['arguments'] ?? [];
