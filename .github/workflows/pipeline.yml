@@ -38,6 +38,9 @@ jobs:
 
   qa:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
