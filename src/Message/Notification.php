@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpLlm\McpSdk\Message;
 
-final readonly class Notification implements \JsonSerializable
+final readonly class Notification implements \JsonSerializable, \Stringable
 {
     /**
      * @param array<string, mixed>|null $params

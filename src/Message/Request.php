@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpLlm\McpSdk\Message;
 
-final class Request implements \JsonSerializable
+final class Request implements \JsonSerializable, \Stringable
 {
     /**
      * @param array<string, mixed>|null $params
