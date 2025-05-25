@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpLlm\McpSdk\Capability\Tool;
+namespace PhpLlm\McpSdk\Capability\Prompt;
 
-final readonly class ToolCall
+final readonly class PromptGet
 {
     /**
      * @param array<string, mixed> $arguments

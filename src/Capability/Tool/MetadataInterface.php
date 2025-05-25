@@ -11,7 +11,14 @@ interface MetadataInterface
     public function getDescription(): string;
 
     /**
-     * @return array<string, mixed>
+     * @return array{
+     *   type?: string,
+     *   required?: list<string>,
+     *   properties?: array<string, array{
+     *       type: string,
+     *       description?: string,
+     *   }>,
+     * }
      */
     public function getInputSchema(): array;
 }

@@ -29,10 +29,31 @@ final class ToolCallHandler extends BaseRequestHandler
             return Error::internalError($message->id, 'Error while executing tool');
         }
 
-        return new Response($message->id, [
-            'content' => [
-                ['type' => 'text', 'text' => $result],
+        $content = match ($result->type) {
+            'text' => [
+                'type' => 'text',
+                'text' => $result->result,
             ],
+            'image', 'audio' => [
+                'type' => $result->type,
+                'data' => $result->result,
+                'mimeType' => $result->mimeType,
+            ],
+            'resource' => [
+                'type' => 'resource',
+                'resource' => [
+                    'uri' => $result->uri,
+                    'mimeType' => $result->mimeType,
+                    'text' => $result->result,
+                ],
+            ],
+            // TODO better exception
+            default => throw new \InvalidArgumentException('Unsupported tool result type: '.$result->type),
+        };
+
+        return new Response($message->id, [
+            'content' => $content,
+            'isError' => $result->isError,
         ]);
     }
 
