@@ -6,12 +6,13 @@ use PhpLlm\McpSdk\Capability\Prompt\MetadataInterface;
 use PhpLlm\McpSdk\Capability\Prompt\PromptGet;
 use PhpLlm\McpSdk\Capability\Prompt\PromptGetResult;
 use PhpLlm\McpSdk\Capability\Prompt\PromptGetResultMessages;
+use PhpLlm\McpSdk\Capability\Prompt\PromptGetterInterface;
 
-class ExamplePrompt implements MetadataInterface
+class ExamplePrompt implements MetadataInterface, PromptGetterInterface
 {
-    public function __invoke(PromptGet $request): PromptGetResult
+    public function get(PromptGet $input): PromptGetResult
     {
-        $firstName = $request->arguments['first name'] ?? null;
+        $firstName = $input->arguments['first name'] ?? null;
 
         return new PromptGetResult(
             $this->getDescription(),

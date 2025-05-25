@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace PhpLlm\McpSdk\Capability\Tool;
 
-interface MetadataInterface
+interface MetadataInterface extends IdentifierInterface
 {
-    public function getName(): string;
-
     public function getDescription(): string;
 
     /**

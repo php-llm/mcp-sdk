@@ -4,11 +4,12 @@ namespace App;
 
 use PhpLlm\McpSdk\Capability\Resource\MetadataInterface;
 use PhpLlm\McpSdk\Capability\Resource\ResourceRead;
+use PhpLlm\McpSdk\Capability\Resource\ResourceReaderInterface;
 use PhpLlm\McpSdk\Capability\Resource\ResourceReadResult;
 
-class ExampleResource implements MetadataInterface
+class ExampleResource implements MetadataInterface, ResourceReaderInterface
 {
-    public function __invoke(ResourceRead $request): ResourceReadResult
+    public function read(ResourceRead $input): ResourceReadResult
     {
         return new ResourceReadResult(
             'Content of '.$this->getName(),

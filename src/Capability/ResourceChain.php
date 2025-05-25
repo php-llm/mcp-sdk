@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Manager;
+namespace PhpLlm\McpSdk\Capability;
 
 use PhpLlm\McpSdk\Capability\Resource\CollectionInterface;
+use PhpLlm\McpSdk\Capability\Resource\IdentifierInterface;
 use PhpLlm\McpSdk\Capability\Resource\MetadataInterface;
 use PhpLlm\McpSdk\Capability\Resource\ResourceRead;
 use PhpLlm\McpSdk\Capability\Resource\ResourceReaderInterface;
@@ -10,12 +11,11 @@ use PhpLlm\McpSdk\Capability\Resource\ResourceReadResult;
 use PhpLlm\McpSdk\Exception\ResourceNotFoundException;
 use PhpLlm\McpSdk\Exception\ResourceReadException;
 
-class ResourceManager implements CollectionInterface, ResourceReaderInterface
+class ResourceChain implements CollectionInterface, ResourceReaderInterface
 {
     public function __construct(
         /**
-         * TODO this is bad design. What if we want to add resource/exists, then this becomes invalid and we need a BC break
-         * @var (MetadataInterface | callable(ResourceRead):ResourceReadResult)[]
+         * @var (IdentifierInterface & (MetadataInterface | ResourceReaderInterface))[]
          */
         private array $items,
     ) {
@@ -23,21 +23,21 @@ class ResourceManager implements CollectionInterface, ResourceReaderInterface
 
     public function getMetadata(): array
     {
-        return $this->items;
+        return array_filter($this->items, fn ($item) => $item instanceof MetadataInterface);
     }
 
-    public function read(ResourceRead $request): ResourceReadResult
+    public function read(ResourceRead $input): ResourceReadResult
     {
         foreach ($this->items as $item) {
-            if ($item instanceof ReadInterface && $request->uri === $item->getUri()) {
+            if ($item instanceof ResourceReaderInterface && $input->uri === $item->getUri()) {
                 try {
-                    return $item($request);
+                    return $item->read($input);
                 } catch (\Throwable $e) {
-                    throw new ResourceReadException($request, $e);
+                    throw new ResourceReadException($input, $e);
                 }
             }
         }
 
-        throw new ResourceNotFoundException($request);
+        throw new ResourceNotFoundException($input);
     }
 }

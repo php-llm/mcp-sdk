@@ -24,7 +24,7 @@ final class ToolCallHandler extends BaseRequestHandler
         $arguments = $message->params['arguments'] ?? [];
 
         try {
-            $result = $this->toolExecutor->execute(new ToolCall(uniqid('', true), $name, $arguments));
+            $result = $this->toolExecutor->call(new ToolCall(uniqid('', true), $name, $arguments));
         } catch (ExceptionInterface) {
             return Error::internalError($message->id, 'Error while executing tool');
         }

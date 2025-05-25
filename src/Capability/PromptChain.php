@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Manager;
+namespace PhpLlm\McpSdk\Capability;
 
 use PhpLlm\McpSdk\Capability\Prompt\CollectionInterface;
+use PhpLlm\McpSdk\Capability\Prompt\IdentifierInterface;
 use PhpLlm\McpSdk\Capability\Prompt\MetadataInterface;
 use PhpLlm\McpSdk\Capability\Prompt\PromptGet;
 use PhpLlm\McpSdk\Capability\Prompt\PromptGetResult;
@@ -10,11 +11,11 @@ use PhpLlm\McpSdk\Capability\Prompt\PromptGetterInterface;
 use PhpLlm\McpSdk\Exception\PromptGetException;
 use PhpLlm\McpSdk\Exception\PromptNotFoundException;
 
-class PromptManager implements PromptGetterInterface, CollectionInterface
+class PromptChain implements PromptGetterInterface, CollectionInterface
 {
     public function __construct(
         /**
-         * @var (MetadataInterface | callable(PromptGet):PromptGetResult)[]
+         * @var (IdentifierInterface & (MetadataInterface | PromptGetterInterface))[]
          */
         private array $items,
     ) {
@@ -22,21 +23,21 @@ class PromptManager implements PromptGetterInterface, CollectionInterface
 
     public function getMetadata(): array
     {
-        return $this->items;
+        return array_filter($this->items, fn ($item) => $item instanceof MetadataInterface);
     }
 
-    public function get(PromptGet $request): PromptGetResult
+    public function get(PromptGet $input): PromptGetResult
     {
         foreach ($this->items as $item) {
-            if ($request->name === $item->getName()) {
+            if ($item instanceof PromptGetterInterface && $input->name === $item->getName()) {
                 try {
-                    return $item($request);
+                    return $item->get($input);
                 } catch (\Throwable $e) {
-                    throw new PromptGetException($request, $e);
+                    throw new PromptGetException($input, $e);
                 }
             }
         }
 
-        throw new PromptNotFoundException($request);
+        throw new PromptNotFoundException($input);
     }
 }

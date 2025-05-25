@@ -11,5 +11,5 @@ interface PromptGetterInterface
      * @throws PromptGetException      if the prompt execution fails
      * @throws PromptNotFoundException if the prompt is not found
      */
-    public function get(PromptGet $request): PromptGetResult;
+    public function get(PromptGet $input): PromptGetResult;
 }

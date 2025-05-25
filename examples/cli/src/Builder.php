@@ -2,9 +2,9 @@
 
 namespace App;
 
-use App\Manager\PromptManager;
-use App\Manager\ResourceManager;
-use App\Manager\ToolManager;
+use PhpLlm\McpSdk\Capability\PromptChain;
+use PhpLlm\McpSdk\Capability\ResourceChain;
+use PhpLlm\McpSdk\Capability\ToolChain;
 use PhpLlm\McpSdk\Server\NotificationHandler;
 use PhpLlm\McpSdk\Server\NotificationHandler\InitializedHandler;
 use PhpLlm\McpSdk\Server\RequestHandler;
@@ -24,15 +24,15 @@ class Builder
      */
     public static function buildRequestHandlers(): array
     {
-        $promptManager = new PromptManager([
+        $promptManager = new PromptChain([
             new ExamplePrompt(),
         ]);
 
-        $resourceManager = new ResourceManager([
+        $resourceManager = new ResourceChain([
             new ExampleResource(),
         ]);
 
-        $toolManager = new ToolManager([
+        $toolManager = new ToolChain([
             new ExampleTool(),
         ]);
 

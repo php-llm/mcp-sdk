@@ -2,8 +2,8 @@
 
 require __DIR__.'/vendor/autoload.php';
 
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console as SymfonyConsole;
+use Symfony\Component\Console\Output\OutputInterface;
 
 $debug = (bool) ($_SERVER['DEBUG'] ?? false);
 
