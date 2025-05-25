@@ -11,7 +11,10 @@ use PhpLlm\McpSdk\Message\Request;
 use PhpLlm\McpSdk\Message\Response;
 use Psr\Log\LoggerInterface;
 
-final readonly class JsonRpcHandler
+/**
+ * @final
+ */
+readonly class JsonRpcHandler
 {
     /**
      * @var array<int, RequestHandler>
@@ -37,6 +40,9 @@ final readonly class JsonRpcHandler
         $this->notificationHandlers = $notificationHandlers instanceof \Traversable ? iterator_to_array($notificationHandlers) : $notificationHandlers;
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function process(string $message): ?string
     {
         $this->logger->info('Received message to process', ['message' => $message]);
@@ -57,7 +63,8 @@ final readonly class JsonRpcHandler
 
         try {
             return $message instanceof Notification
-                ? $this->handleNotification($message) : $this->encodeResponse($this->handleRequest($message));
+                ? $this->handleNotification($message)
+                : $this->encodeResponse($this->handleRequest($message));
         } catch (\DomainException) {
             return null;
         } catch (\InvalidArgumentException $e) {

@@ -28,7 +28,15 @@ final readonly class Server
                     continue;
                 }
 
-                $response = $this->jsonRpcHandler->process($message);
+                try {
+                    $response = $this->jsonRpcHandler->process($message);
+                } catch (\JsonException $e) {
+                    $this->logger->error('Failed to process message', [
+                        'message' => $message,
+                        'exception' => $e,
+                    ]);
+                    continue;
+                }
 
                 if (null === $response) {
                     continue;
