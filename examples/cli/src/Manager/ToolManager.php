@@ -2,8 +2,8 @@
 
 namespace App\Manager;
 
-use App\ExampleTool;
 use PhpLlm\McpSdk\Capability\Tool\CollectionInterface;
+use PhpLlm\McpSdk\Capability\Tool\MetadataInterface;
 use PhpLlm\McpSdk\Capability\Tool\ToolCall;
 use PhpLlm\McpSdk\Capability\Tool\ToolCallResult;
 use PhpLlm\McpSdk\Capability\Tool\ToolExecutorInterface;
@@ -12,16 +12,12 @@ use PhpLlm\McpSdk\Exception\ToolNotFoundException;
 
 class ToolManager implements ToolExecutorInterface, CollectionInterface
 {
-    /**
-     * @var mixed[]
-     */
-    private array $items;
-
     public function __construct(
+        /**
+         * @var (MetadataInterface | callable(ToolCall):ToolCallResult)[] $items
+         */
+        private array $items,
     ) {
-        $this->items = [
-            new ExampleTool(),
-        ];
     }
 
     public function getMetadata(): array
@@ -31,12 +27,10 @@ class ToolManager implements ToolExecutorInterface, CollectionInterface
 
     public function execute(ToolCall $toolCall): ToolCallResult
     {
-        foreach ($this->items as $tool) {
-            if ($toolCall->name === $tool->getName()) {
+        foreach ($this->items as $item) {
+            if ($toolCall->name === $item->getName()) {
                 try {
-                    return new ToolCallResult(
-                        $tool->__invoke(...$toolCall->arguments),
-                    );
+                    return $item($toolCall);
                 } catch (\Throwable $e) {
                     throw new ToolExecutionException($toolCall, $e);
                 }

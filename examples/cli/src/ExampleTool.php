@@ -3,12 +3,18 @@
 namespace App;
 
 use PhpLlm\McpSdk\Capability\Tool\MetadataInterface;
+use PhpLlm\McpSdk\Capability\Tool\ToolCall;
+use PhpLlm\McpSdk\Capability\Tool\ToolCallResult;
 
 class ExampleTool implements MetadataInterface
 {
-    public function __invoke(string $format = 'Y-m-d H:i:s'): string
+    public function __invoke(ToolCall $toolCall): ToolCallResult
     {
-        return (new \DateTime('now', new \DateTimeZone('UTC')))->format($format);
+        $format = $toolCall->arguments['format'] ?? 'Y-m-d H:i:s';
+
+        return new ToolCallResult(
+            (new \DateTime('now', new \DateTimeZone('UTC')))->format($format)
+        );
     }
 
     public function getName(): string

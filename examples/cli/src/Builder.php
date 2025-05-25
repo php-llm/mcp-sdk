@@ -24,9 +24,17 @@ class Builder
      */
     public static function buildRequestHandlers(): array
     {
-        $promptManager = new PromptManager();
-        $resourceManager = new ResourceManager();
-        $toolManager = new ToolManager();
+        $promptManager = new PromptManager([
+            new ExamplePrompt(),
+        ]);
+
+        $resourceManager = new ResourceManager([
+            new ExampleResource(),
+        ]);
+
+        $toolManager = new ToolManager([
+            new ExampleTool(),
+        ]);
 
         return [
             new InitializeHandler(),

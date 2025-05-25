@@ -3,9 +3,19 @@
 namespace App;
 
 use PhpLlm\McpSdk\Capability\Resource\MetadataInterface;
+use PhpLlm\McpSdk\Capability\Resource\ResourceRead;
+use PhpLlm\McpSdk\Capability\Resource\ResourceReadResult;
 
 class ExampleResource implements MetadataInterface
 {
+    public function __invoke(ResourceRead $request): ResourceReadResult
+    {
+        return new ResourceReadResult(
+            'Content of '.$this->getName(),
+            $this->getUri(),
+        );
+    }
+
     public function getUri(): string
     {
         return 'file:///project/src/main.rs';

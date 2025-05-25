@@ -3,15 +3,16 @@
 require __DIR__.'/vendor/autoload.php';
 
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console as SymfonyConsole;
 
 $debug = (bool) ($_SERVER['DEBUG'] ?? false);
 
 // Setup input, output and logger
-$input = new Symfony\Component\Console\Input\ArgvInput($argv);
-$output = new Symfony\Component\Console\Output\ConsoleOutput($debug ? OutputInterface::VERBOSITY_VERY_VERBOSE : OutputInterface::VERBOSITY_NORMAL);
-$logger = new Symfony\Component\Console\Logger\ConsoleLogger($output);
+$input = new SymfonyConsole\Input\ArgvInput($argv);
+$output = new SymfonyConsole\Output\ConsoleOutput($debug ? OutputInterface::VERBOSITY_VERY_VERBOSE : OutputInterface::VERBOSITY_NORMAL);
+$logger = new SymfonyConsole\Logger\ConsoleLogger($output);
 
-// Configure the JsonRpcHandler
+// Configure the JsonRpcHandler and build the functionality
 $jsonRpcHandler = new PhpLlm\McpSdk\Server\JsonRpcHandler(
     new PhpLlm\McpSdk\Message\Factory(),
     App\Builder::buildRequestHandlers(),

@@ -2,25 +2,23 @@
 
 namespace App\Manager;
 
-use App\ExampleResource;
 use PhpLlm\McpSdk\Capability\Resource\CollectionInterface;
+use PhpLlm\McpSdk\Capability\Resource\MetadataInterface;
 use PhpLlm\McpSdk\Capability\Resource\ResourceRead;
 use PhpLlm\McpSdk\Capability\Resource\ResourceReaderInterface;
 use PhpLlm\McpSdk\Capability\Resource\ResourceReadResult;
 use PhpLlm\McpSdk\Exception\ResourceNotFoundException;
+use PhpLlm\McpSdk\Exception\ResourceReadException;
 
 class ResourceManager implements CollectionInterface, ResourceReaderInterface
 {
-    /**
-     * @var mixed[]
-     */
-    private array $items;
-
     public function __construct(
+        /**
+         * TODO this is bad design. What if we want to add resource/exists, then this becomes invalid and we need a BC break
+         * @var (MetadataInterface | callable(ResourceRead):ResourceReadResult)[]
+         */
+        private array $items,
     ) {
-        $this->items = [
-            new ExampleResource(),
-        ];
     }
 
     public function getMetadata(): array
@@ -30,14 +28,13 @@ class ResourceManager implements CollectionInterface, ResourceReaderInterface
 
     public function read(ResourceRead $request): ResourceReadResult
     {
-        foreach ($this->items as $resource) {
-            if ($request->uri === $resource->getUri()) {
-                // In a real implementation, you would read the resource from its URI.
-                // Here we just return a dummy string for demonstration purposes.
-                return new ResourceReadResult(
-                    'Content of '.$resource->getName(),
-                    $resource->getUri(),
-                );
+        foreach ($this->items as $item) {
+            if ($item instanceof ReadInterface && $request->uri === $item->getUri()) {
+                try {
+                    return $item($request);
+                } catch (\Throwable $e) {
+                    throw new ResourceReadException($request, $e);
+                }
             }
         }
 
