@@ -11,11 +11,14 @@ use PhpLlm\McpSdk\Capability\Resource\ResourceReadResult;
 use PhpLlm\McpSdk\Exception\ResourceNotFoundException;
 use PhpLlm\McpSdk\Exception\ResourceReadException;
 
+/**
+ * A collection of resources. All resources need to implement IdentifierInterface.
+ */
 class ResourceChain implements CollectionInterface, ResourceReaderInterface
 {
     public function __construct(
         /**
-         * @var (IdentifierInterface & (MetadataInterface | ResourceReaderInterface))[]
+         * @var IdentifierInterface[]
          */
         private array $items,
     ) {

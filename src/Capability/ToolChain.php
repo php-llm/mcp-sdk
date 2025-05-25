@@ -11,11 +11,14 @@ use PhpLlm\McpSdk\Capability\Tool\ToolExecutorInterface;
 use PhpLlm\McpSdk\Exception\ToolExecutionException;
 use PhpLlm\McpSdk\Exception\ToolNotFoundException;
 
+/**
+ * A collection of tools. All tools need to implement IdentifierInterface.
+ */
 class ToolChain implements ToolExecutorInterface, CollectionInterface
 {
     public function __construct(
         /**
-         * @var (IdentifierInterface & (MetadataInterface | ToolExecutorInterface))[] $items
+         * @var IdentifierInterface[] $items
          */
         private array $items,
     ) {

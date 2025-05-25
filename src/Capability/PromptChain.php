@@ -11,11 +11,14 @@ use PhpLlm\McpSdk\Capability\Prompt\PromptGetterInterface;
 use PhpLlm\McpSdk\Exception\PromptGetException;
 use PhpLlm\McpSdk\Exception\PromptNotFoundException;
 
+/**
+ * A collection of prompts. All prompts need to implement IdentifierInterface.
+ */
 class PromptChain implements PromptGetterInterface, CollectionInterface
 {
     public function __construct(
         /**
-         * @var (IdentifierInterface & (MetadataInterface | PromptGetterInterface))[]
+         * @var IdentifierInterface[]
          */
         private array $items,
     ) {
