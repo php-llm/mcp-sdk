@@ -20,7 +20,7 @@ class ToolChain implements ToolExecutorInterface, CollectionInterface
         /**
          * @var IdentifierInterface[] $items
          */
-        private array $items,
+        private readonly array $items,
     ) {
     }
 

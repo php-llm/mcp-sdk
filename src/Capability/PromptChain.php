@@ -20,7 +20,7 @@ class PromptChain implements PromptGetterInterface, CollectionInterface
         /**
          * @var IdentifierInterface[]
          */
-        private array $items,
+        private readonly array $items,
     ) {
     }
 

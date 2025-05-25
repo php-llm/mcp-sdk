@@ -20,7 +20,7 @@ class ResourceChain implements CollectionInterface, ResourceReaderInterface
         /**
          * @var IdentifierInterface[]
          */
-        private array $items,
+        private readonly array $items,
     ) {
     }
 
