@@ -19,10 +19,12 @@
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^11.5",
         "symfony/console": "^6.4 || ^7.0",
-        "rector/rector": "^2.0"
+        "rector/rector": "^2.0",
+        "psr/cache": "^3.0"
     },
     "suggest": {
-        "symfony/console": "To use SymfonyConsoleTransport for STDIO"
+        "symfony/console": "To use SymfonyConsoleTransport for STDIO",
+        "psr/cache": "To use CachePoolStore with SSE Transport"
     },
     "autoload": {
         "psr-4": {
