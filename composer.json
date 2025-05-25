@@ -7,6 +7,10 @@
         {
             "name": "Christopher Hertel",
             "email": "mail@christopher-hertel.de"
+        },
+        {
+            "name": "Tobias Nyholm",
+            "email": "tobias.nyholm@gmail.com"
         }
     ],
     "require": {
