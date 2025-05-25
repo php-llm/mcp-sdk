@@ -8,6 +8,9 @@ class InMemoryTransport implements Transport
 {
     private bool $connected = true;
 
+    /**
+     * @param list<string> $messages
+     */
     public function __construct(
         private readonly array $messages = [],
     ) {
