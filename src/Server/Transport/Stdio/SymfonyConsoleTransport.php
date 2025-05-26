@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpLlm\McpSdk\Server\Transport\Stdio;
 
-use PhpLlm\McpSdk\Server\Transport;
+use PhpLlm\McpSdk\Server\TransportInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StreamableInputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Heavily inspired by https://jolicode.com/blog/mcp-the-open-protocol-that-turns-llm-chatbots-into-intelligent-agents.
  */
-final class SymfonyConsoleTransport implements Transport
+final class SymfonyConsoleTransport implements TransportInterface
 {
     private string $buffer = '';
 

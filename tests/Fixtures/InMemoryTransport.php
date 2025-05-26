@@ -2,9 +2,9 @@
 
 namespace PhpLlm\McpSdk\Tests\Fixtures;
 
-use PhpLlm\McpSdk\Server\Transport;
+use PhpLlm\McpSdk\Server\TransportInterface;
 
-class InMemoryTransport implements Transport
+class InMemoryTransport implements TransportInterface
 {
     private bool $connected = true;
 

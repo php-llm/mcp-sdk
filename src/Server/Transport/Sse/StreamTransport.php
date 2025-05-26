@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace PhpLlm\McpSdk\Server\Transport\Sse;
 
-use PhpLlm\McpSdk\Server\Transport;
+use PhpLlm\McpSdk\Server\TransportInterface;
 use Symfony\Component\Uid\Uuid;
 
-final readonly class StreamTransport implements Transport
+final readonly class StreamTransport implements TransportInterface
 {
     public function __construct(
         private string $messageEndpoint,
-        private Store $store,
+        private StoreInterface $store,
         private Uuid $id,
     ) {
     }

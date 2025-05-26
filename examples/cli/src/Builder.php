@@ -5,9 +5,8 @@ namespace App;
 use PhpLlm\McpSdk\Capability\PromptChain;
 use PhpLlm\McpSdk\Capability\ResourceChain;
 use PhpLlm\McpSdk\Capability\ToolChain;
-use PhpLlm\McpSdk\Server\NotificationHandler;
 use PhpLlm\McpSdk\Server\NotificationHandler\InitializedHandler;
-use PhpLlm\McpSdk\Server\RequestHandler;
+use PhpLlm\McpSdk\Server\NotificationHandlerInterface;
 use PhpLlm\McpSdk\Server\RequestHandler\InitializeHandler;
 use PhpLlm\McpSdk\Server\RequestHandler\PingHandler;
 use PhpLlm\McpSdk\Server\RequestHandler\PromptGetHandler;
@@ -16,11 +15,12 @@ use PhpLlm\McpSdk\Server\RequestHandler\ResourceListHandler;
 use PhpLlm\McpSdk\Server\RequestHandler\ResourceReadHandler;
 use PhpLlm\McpSdk\Server\RequestHandler\ToolCallHandler;
 use PhpLlm\McpSdk\Server\RequestHandler\ToolListHandler;
+use PhpLlm\McpSdk\Server\RequestHandlerInterface;
 
 class Builder
 {
     /**
-     * @return list<RequestHandler>
+     * @return list<RequestHandlerInterface>
      */
     public static function buildRequestHandlers(): array
     {
@@ -49,7 +49,7 @@ class Builder
     }
 
     /**
-     * @return list<NotificationHandler>
+     * @return list<NotificationHandlerInterface>
      */
     public static function buildNotificationHandlers(): array
     {

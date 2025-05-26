@@ -17,18 +17,18 @@ use Psr\Log\LoggerInterface;
 readonly class JsonRpcHandler
 {
     /**
-     * @var array<int, RequestHandler>
+     * @var array<int, RequestHandlerInterface>
      */
     private array $requestHandlers;
 
     /**
-     * @var array<int, NotificationHandler>
+     * @var array<int, NotificationHandlerInterface>
      */
     private array $notificationHandlers;
 
     /**
-     * @param iterable<RequestHandler>      $requestHandlers
-     * @param iterable<NotificationHandler> $notificationHandlers
+     * @param iterable<RequestHandlerInterface>      $requestHandlers
+     * @param iterable<NotificationHandlerInterface> $notificationHandlers
      */
     public function __construct(
         private Factory $messageFactory,
