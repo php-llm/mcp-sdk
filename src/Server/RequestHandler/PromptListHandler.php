@@ -20,7 +20,7 @@ final class PromptListHandler extends BaseRequestHandler
     public function createResponse(Request|Notification $message): Response
     {
         return new Response($message->id, [
-            'resources' => array_map(function (MetadataInterface $metadata) {
+            'prompts' => array_map(function (MetadataInterface $metadata) {
                 $result = [
                     'name' => $metadata->getName(),
                 ];
