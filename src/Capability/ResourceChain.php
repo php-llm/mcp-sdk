@@ -16,28 +16,33 @@ use PhpLlm\McpSdk\Exception\ResourceReadException;
  */
 class ResourceChain implements CollectionInterface, ResourceReaderInterface
 {
-    public function __construct(
-        /**
-         * @var IdentifierInterface[]
-         */
-        private readonly array $items,
-    ) {
+    /** @var MetadataInterface[] */
+    private readonly array $items;
+
+    /**
+     * @param IdentifierInterface[] $items
+     */
+    public function __construct(array $items)
+    {
+        /** @var MetadataInterface[] $values */
+        $values = array_values(array_filter($items, fn ($item) => $item instanceof MetadataInterface));
+        $keys = array_map(fn ($item) => $item->getUri(), $values);
+        $this->items = array_combine($keys, $values);
     }
 
     public function getMetadata(): array
     {
-        return array_filter($this->items, fn ($item) => $item instanceof MetadataInterface);
+        return array_values($this->items);
     }
 
     public function read(ResourceRead $input): ResourceReadResult
     {
-        foreach ($this->items as $item) {
-            if ($item instanceof ResourceReaderInterface && $input->uri === $item->getUri()) {
-                try {
-                    return $item->read($input);
-                } catch (\Throwable $e) {
-                    throw new ResourceReadException($input, $e);
-                }
+        $item = $this->items[$input->uri] ?? null;
+        if (!empty($item) && $item instanceof ResourceReaderInterface) {
+            try {
+                return $item->read($input);
+            } catch (\Throwable $e) {
+                throw new ResourceReadException($input, $e);
             }
         }
 

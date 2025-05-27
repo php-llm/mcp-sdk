@@ -16,28 +16,33 @@ use PhpLlm\McpSdk\Exception\PromptNotFoundException;
  */
 class PromptChain implements PromptGetterInterface, CollectionInterface
 {
-    public function __construct(
-        /**
-         * @var IdentifierInterface[]
-         */
-        private readonly array $items,
-    ) {
+    /** @var MetadataInterface[] */
+    private readonly array $items;
+
+    /**
+     * @param IdentifierInterface[] $items
+     */
+    public function __construct(array $items)
+    {
+        /** @var MetadataInterface[] $values */
+        $values = array_values(array_filter($items, fn ($item) => $item instanceof MetadataInterface));
+        $keys = array_map(fn ($item) => $item->getName(), $values);
+        $this->items = array_combine($keys, $values);
     }
 
     public function getMetadata(): array
     {
-        return array_filter($this->items, fn ($item) => $item instanceof MetadataInterface);
+        return array_values($this->items);
     }
 
     public function get(PromptGet $input): PromptGetResult
     {
-        foreach ($this->items as $item) {
-            if ($item instanceof PromptGetterInterface && $input->name === $item->getName()) {
-                try {
-                    return $item->get($input);
-                } catch (\Throwable $e) {
-                    throw new PromptGetException($input, $e);
-                }
+        $item = $this->items[$input->name] ?? null;
+        if (!empty($item) && $item instanceof PromptGetterInterface) {
+            try {
+                return $item->get($input);
+            } catch (\Throwable $e) {
+                throw new PromptGetException($input, $e);
             }
         }
 
