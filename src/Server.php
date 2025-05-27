@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PhpLlm\McpSdk;
 
 use PhpLlm\McpSdk\Server\JsonRpcHandler;
-use PhpLlm\McpSdk\Server\Transport;
+use PhpLlm\McpSdk\Server\TransportInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -17,7 +17,7 @@ final readonly class Server
     ) {
     }
 
-    public function connect(Transport $transport): void
+    public function connect(TransportInterface $transport): void
     {
         $transport->initialize();
         $this->logger->info('Transport initialized');
@@ -28,7 +28,15 @@ final readonly class Server
                     continue;
                 }
 
-                $response = $this->jsonRpcHandler->process($message);
+                try {
+                    $response = $this->jsonRpcHandler->process($message);
+                } catch (\JsonException $e) {
+                    $this->logger->error('Failed to process message', [
+                        'message' => $message,
+                        'exception' => $e,
+                    ]);
+                    continue;
+                }
 
                 if (null === $response) {
                     continue;

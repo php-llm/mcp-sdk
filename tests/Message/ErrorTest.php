@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Mcp\Message;
+namespace PhpLlm\McpSdk\Tests\Message;
 
 use PhpLlm\McpSdk\Message\Error;
 use PHPUnit\Framework\TestCase;

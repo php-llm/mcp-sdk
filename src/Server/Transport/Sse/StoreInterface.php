@@ -6,7 +6,7 @@ namespace PhpLlm\McpSdk\Server\Transport\Sse;
 
 use Symfony\Component\Uid\Uuid;
 
-interface Store
+interface StoreInterface
 {
     public function push(Uuid $id, string $message): void;
 

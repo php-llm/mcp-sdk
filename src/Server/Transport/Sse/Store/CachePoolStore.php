@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PhpLlm\McpSdk\Server\Transport\Sse\Store;
 
-use PhpLlm\McpSdk\Server\Transport\Sse\Store;
+use PhpLlm\McpSdk\Server\Transport\Sse\StoreInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Uid\Uuid;
 
-final readonly class CachePoolStore implements Store
+final readonly class CachePoolStore implements StoreInterface
 {
     public function __construct(
         private CacheItemPoolInterface $cachePool,

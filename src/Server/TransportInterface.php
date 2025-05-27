@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpLlm\McpSdk\Server;
 
-interface Transport
+interface TransportInterface
 {
     public function initialize(): void;
 

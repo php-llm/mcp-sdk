@@ -6,7 +6,7 @@ namespace PhpLlm\McpSdk\Server;
 
 use PhpLlm\McpSdk\Message\Notification;
 
-interface NotificationHandler
+interface NotificationHandlerInterface
 {
     public function supports(Notification $message): bool;
 

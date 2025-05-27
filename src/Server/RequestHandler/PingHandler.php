@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace PhpLlm\McpSdk\Server\RequestHandler;
 
-use PhpLlm\McpSdk\Message\Notification;
 use PhpLlm\McpSdk\Message\Request;
 use PhpLlm\McpSdk\Message\Response;
 
 final class PingHandler extends BaseRequestHandler
 {
-    public function createResponse(Request|Notification $message): Response
+    public function createResponse(Request $message): Response
     {
         return new Response($message->id, []);
     }

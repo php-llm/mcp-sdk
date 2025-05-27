@@ -8,7 +8,7 @@ use PhpLlm\McpSdk\Message\Error;
 use PhpLlm\McpSdk\Message\Request;
 use PhpLlm\McpSdk\Message\Response;
 
-interface RequestHandler
+interface RequestHandlerInterface
 {
     public function supports(Request $message): bool;
 

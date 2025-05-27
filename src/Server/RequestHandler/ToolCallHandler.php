@@ -4,36 +4,56 @@ declare(strict_types=1);
 
 namespace PhpLlm\McpSdk\Server\RequestHandler;
 
-use PhpLlm\LlmChain\Chain\Toolbox\ToolboxInterface;
-use PhpLlm\LlmChain\Exception\ExceptionInterface;
-use PhpLlm\LlmChain\Model\Response\ToolCall;
+use PhpLlm\McpSdk\Capability\Tool\ToolCall;
+use PhpLlm\McpSdk\Capability\Tool\ToolExecutorInterface;
+use PhpLlm\McpSdk\Exception\ExceptionInterface;
 use PhpLlm\McpSdk\Message\Error;
-use PhpLlm\McpSdk\Message\Notification;
 use PhpLlm\McpSdk\Message\Request;
 use PhpLlm\McpSdk\Message\Response;
 
 final class ToolCallHandler extends BaseRequestHandler
 {
     public function __construct(
-        private readonly ToolboxInterface $toolbox,
+        private readonly ToolExecutorInterface $toolExecutor,
     ) {
     }
 
-    public function createResponse(Request|Notification $message): Response|Error
+    public function createResponse(Request $message): Response|Error
     {
         $name = $message->params['name'];
         $arguments = $message->params['arguments'] ?? [];
 
         try {
-            $result = $this->toolbox->execute(new ToolCall(uniqid(), $name, $arguments));
+            $result = $this->toolExecutor->call(new ToolCall(uniqid('', true), $name, $arguments));
         } catch (ExceptionInterface) {
             return Error::internalError($message->id, 'Error while executing tool');
         }
 
-        return new Response($message->id, [
-            'content' => [
-                ['type' => 'text', 'text' => $result],
+        $content = match ($result->type) {
+            'text' => [
+                'type' => 'text',
+                'text' => $result->result,
             ],
+            'image', 'audio' => [
+                'type' => $result->type,
+                'data' => $result->result,
+                'mimeType' => $result->mimeType,
+            ],
+            'resource' => [
+                'type' => 'resource',
+                'resource' => [
+                    'uri' => $result->uri,
+                    'mimeType' => $result->mimeType,
+                    'text' => $result->result,
+                ],
+            ],
+            // TODO better exception
+            default => throw new \InvalidArgumentException('Unsupported tool result type: '.$result->type),
+        };
+
+        return new Response($message->id, [
+            'content' => $content,
+            'isError' => $result->isError,
         ]);
     }
 

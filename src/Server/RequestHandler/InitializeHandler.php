@@ -18,9 +18,11 @@ final class InitializeHandler extends BaseRequestHandler
     public function createResponse(Request $message): Response
     {
         return new Response($message->id, [
-            'protocolVersion' => '2024-11-05',
+            'protocolVersion' => '2025-03-26',
             'capabilities' => [
-                'tools' => ['listChanged' => true],
+                'prompts' => ['listChanged' => false],
+                'tools' => ['listChanged' => false],
+                'resources' => ['listChanged' => false, 'subscribe' => false],
             ],
             'serverInfo' => ['name' => $this->name, 'version' => $this->version],
         ]);

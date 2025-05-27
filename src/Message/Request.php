@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpLlm\McpSdk\Message;
 
-final class Request implements \JsonSerializable
+final class Request implements \JsonSerializable, \Stringable
 {
     /**
      * @param array<string, mixed>|null $params
@@ -39,5 +39,10 @@ final class Request implements \JsonSerializable
             'method' => $this->method,
             'params' => $this->params,
         ];
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('%s: %s', $this->id, $this->method);
     }
 }
