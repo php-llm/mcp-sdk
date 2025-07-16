@@ -13,6 +13,7 @@
             "email": "tobias.nyholm@gmail.com"
         }
     ],
+    "abandoned": "symfony/mcp-sdk",
     "require": {
         "php": "^8.2",
         "psr/log": "^3.0",
