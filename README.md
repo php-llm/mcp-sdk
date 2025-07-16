@@ -1,5 +1,10 @@
 # Model Context Protocol PHP SDK [WIP]
 
+> [!IMPORTANT]  
+> **PHP LLM becomes Symfony AI** - this project moved to [github.com/symfony/ai](https://github.com/symfony/ai).
+> Please use the new repository for all future development, issues, and contributions.
+> Thanks for your contributions - we hope to see you at Symfony AI!
+
 Model Context Protocol SDK for Client and Server applications in PHP.
 **Currently only support Tool Calls as Server via Server-Sent Events (SSE) and STDIO.**
 
